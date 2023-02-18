@@ -1,15 +1,17 @@
-package main
+package handlers
 
 import (
 	"net/http"
+
+	"github.com/ZhijiunY/golang-web/pkg/render"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	// call renderTemplate
-	renderTemplate(w, "home.page.tmpl")
+	render.RenderTemplate(w, "home.page.tmpl")
 
 }
 
 func About(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "about.page.tmpl")
+	render.RenderTemplate(w, "about.page.tmpl")
 }
