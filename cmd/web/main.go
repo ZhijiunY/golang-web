@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/ZhijiunY/golang-web/pkg/handlers"
@@ -12,5 +13,6 @@ func main() {
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/about", handlers.About)
 
-	http.ListenAndServe(portNumber, nil)
+	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+	_ = http.ListenAndServe(portNumber, nil)
 }
