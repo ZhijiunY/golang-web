@@ -1,8 +1,8 @@
 package config
 
 import (
+	"html/template"
 	"log"
-	"text/template"
 )
 
 // AppConfig holds the application config

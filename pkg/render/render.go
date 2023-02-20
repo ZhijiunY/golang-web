@@ -9,9 +9,14 @@ import (
 	"path/filepath"
 
 	"github.com/ZhijiunY/golang-web/pkg/config"
+	"github.com/ZhijiunY/golang-web/pkg/models"
 )
 
-var functions = template.FuncMap{}
+var (
+	// "undefined app = a" is most likely due to the variable "app" not being defined in the package-level scope.
+	app       *config.AppConfig
+	functions = template.FuncMap{}
+)
 
 // NewTemplate sets the config for the template package
 func NewTemplates(a *config.AppConfig) {
@@ -19,11 +24,28 @@ func NewTemplates(a *config.AppConfig) {
 
 }
 
-// RenderTemplate renders a template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
-	// get the template cache from the app config
+func addDefaultData(td *models.TemplateData) *models.TemplateData {
+	return td
+}
 
-	tc := app.TemplateCache
+// RenderTemplate renders a template
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+
+	var tc map[string]*template.Template
+
+	if app.UseCache {
+		// get the template cache from the app config
+		tc = app.TemplateCache
+	} else {
+
+		tc, _ = CreateTemplateCache()
+		// var err error
+		// tc, err = CreateTemplateCache()
+		// if err != nil {
+		// 	log.Fatal(err)
+		// 	return
+		// }
+	}
 
 	t, ok := tc[tmpl]
 	if !ok {
@@ -31,8 +53,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 
 	buf := new(bytes.Buffer)
-
-	_ = t.Execute(buf, nil)
+	td = addDefaultData(td)
+	_ = t.Execute(buf, td)
 
 	_, err := buf.WriteTo(w)
 	if err != nil {
