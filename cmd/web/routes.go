@@ -24,6 +24,7 @@ func routes(app *config.AppConfig) http.Handler {
 
 	// go get "github.com/justinas/nosurf"
 	mux.Use(NoSurf)
+	mux.Use(sessionLoad)
 
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/about", handlers.Repo.About)
