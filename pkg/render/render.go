@@ -24,7 +24,7 @@ func NewTemplates(a *config.AppConfig) {
 
 }
 
-func addDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
 	return td
 }
 
@@ -53,7 +53,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 	}
 
 	buf := new(bytes.Buffer)
-	td = addDefaultData(td)
+	td = AddDefaultData(td)
 	_ = t.Execute(buf, td)
 
 	_, err := buf.WriteTo(w)
