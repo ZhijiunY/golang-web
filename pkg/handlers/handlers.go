@@ -43,13 +43,13 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 // About is the handler for the about page
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
-	//
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
+	stringMap := make(map[string]string)
 
 	// perform some logic
-	stringMap := make(map[string]string)
 	stringMap["test"] = "Hello, again, and again and again!"
+
+	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+	stringMap["remote_ip"] = remoteIP
 
 	// send the data to the template
 	render.RenderTemplate(w, "about.page.tmpl", &models.TemplateData{
